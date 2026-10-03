@@ -1,0 +1,550 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const CampusClubApp());
+}
+
+class CampusClubApp extends StatelessWidget {
+  const CampusClubApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Campus Club',
+      theme: ThemeData(primarySwatch: Colors.deepPurple, useMaterial3: true),
+      home: const LoginScreen(),
+    );
+  }
+}
+
+// =====================================================
+// LOGIN SCREEN
+// =====================================================
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  bool hidePassword = true;
+
+  void login() {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    // Check only whether fields are filled
+    if (email.isNotEmpty && password.isNotEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please enter email and password"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xffF5F3FF),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(25),
+            child: Column(
+              children: [
+                // Logo
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.deepPurple,
+                    borderRadius: BorderRadius.circular(28),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.deepPurple.withOpacity(0.3),
+                        blurRadius: 15,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.school,
+                    size: 55,
+                    color: Colors.white,
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+
+                // Title
+                const Text(
+                  "Campus Club",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                const Text(
+                  "Connect • Explore • Grow",
+                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                ),
+
+                const SizedBox(height: 40),
+
+                // Login Card
+                Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Welcome back to Campus Club",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      // Email
+                      TextField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          hintText: "Enter your email",
+                          prefixIcon: const Icon(Icons.email_outlined),
+                          filled: true,
+                          fillColor: const Color(0xffF8F7FC),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Password
+                      TextField(
+                        controller: passwordController,
+                        obscureText: hidePassword,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          hintText: "Enter your password",
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
+                            },
+                            icon: Icon(
+                              hidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xffF8F7FC),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: const Text("Forgot Password?"),
+                        ),
+                      ),
+
+                      const SizedBox(height: 15),
+
+                      // Login Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: login,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: const Text(
+                            "LOGIN",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Don't have an account?"),
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text("Sign Up"),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// =====================================================
+// HOME SCREEN
+// =====================================================
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xffF7F5FF),
+
+      // APP BAR
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          "Campus Club",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_outlined),
+          ),
+        ],
+      ),
+
+      // DRAWER
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(color: Colors.deepPurple),
+              accountName: const Text("Campus Student"),
+              accountEmail: const Text("student@gmail.com"),
+              currentAccountPicture: const CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person, size: 40, color: Colors.deepPurple),
+              ),
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text("Home"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.groups),
+              title: const Text("Clubs"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.event),
+              title: const Text("Events"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+
+            const Divider(),
+
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text("Logout"),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+
+      // HOME BODY
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Welcome section
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(25),
+              decoration: const BoxDecoration(
+                color: Colors.deepPurple,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(35),
+                  bottomRight: Radius.circular(35),
+                ),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Hello, Student 👋",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  SizedBox(height: 10),
+
+                  Text(
+                    "Welcome to your campus community!",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // Quick Access
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "Quick Access",
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+              ),
+            ),
+
+            const SizedBox(height: 18),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                QuickButton(icon: Icons.groups, title: "Clubs", onTap: () {}),
+
+                QuickButton(icon: Icons.event, title: "Events", onTap: () {}),
+
+                QuickButton(icon: Icons.people, title: "Members", onTap: () {}),
+              ],
+            ),
+
+            const SizedBox(height: 35),
+
+            // Upcoming events
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "Upcoming Events",
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            EventCard(
+              title: "Tech Fest 2026",
+              date: "October 15, 2026",
+              icon: Icons.computer,
+            ),
+
+            EventCard(
+              title: "Cultural Night",
+              date: "October 20, 2026",
+              icon: Icons.music_note,
+            ),
+
+            EventCard(
+              title: "Sports Meet",
+              date: "October 25, 2026",
+              icon: Icons.sports,
+            ),
+
+            const SizedBox(height: 30),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// =====================================================
+// QUICK BUTTON
+// =====================================================
+
+class QuickButton extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  const QuickButton({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            height: 70,
+            width: 70,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Icon(icon, size: 32, color: Colors.deepPurple),
+          ),
+
+          const SizedBox(height: 8),
+
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+        ],
+      ),
+    );
+  }
+}
+
+// =====================================================
+// EVENT CARD
+// =====================================================
+
+class EventCard extends StatelessWidget {
+  final String title;
+  final String date;
+  final IconData icon;
+
+  const EventCard({
+    super.key,
+    required this.title,
+    required this.date,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(12),
+
+        leading: Container(
+          height: 55,
+          width: 55,
+          decoration: BoxDecoration(
+            color: const Color(0xffEEE9FF),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Icon(icon, color: Colors.deepPurple),
+        ),
+
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Text(date),
+        ),
+
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      ),
+    );
+  }
+}
